@@ -83,37 +83,46 @@ let UserResolver = class UserResolver {
                 return {
                     errors: [
                         {
-                            field: 'username',
-                            message: 'username must be longer than 2 characters'
-                        }
-                    ]
+                            field: "username",
+                            message: "username must be longer than 2 characters",
+                        },
+                    ],
                 };
             }
             if (options.password.length <= 2) {
                 return {
                     errors: [
                         {
-                            field: 'password',
-                            message: 'password must be longer than 2 characters'
-                        }
-                    ]
+                            field: "password",
+                            message: "password must be longer than 2 characters",
+                        },
+                    ],
                 };
             }
             const hashedPassword = yield argon2_1.default.hash(options.password);
-            const user = em.create(User_1.User, {
-                username: options.username,
-                password: hashedPassword
-            });
+            let user;
             try {
-                yield em.persistAndFlush(user);
+                const result = yield em
+                    .createQueryBuilder(User_1.User)
+                    .getKnexQuery()
+                    .insert({
+                    username: options.username,
+                    password: hashedPassword,
+                    created_at: new Date(),
+                    updated_at: new Date(),
+                })
+                    .returning("*");
+                user = result[0];
             }
             catch (err) {
-                if (err.code === '23505' || err.detail.includes("already exists")) {
+                if (err.code === "23505" || err.detail.includes("already exists")) {
                     return {
-                        errors: [{
-                                field: 'username',
-                                message: "username is taken"
-                            }]
+                        errors: [
+                            {
+                                field: "username",
+                                message: "username is taken",
+                            },
+                        ],
                     };
                 }
             }
@@ -130,8 +139,8 @@ let UserResolver = class UserResolver {
                         {
                             field: "username",
                             message: "that username doesn't exist",
-                        }
-                    ]
+                        },
+                    ],
                 };
             }
             const valid = yield argon2_1.default.verify(user.password, options.password);
@@ -141,8 +150,8 @@ let UserResolver = class UserResolver {
                         {
                             field: "password",
                             message: "incorrect password",
-                        }
-                    ]
+                        },
+                    ],
                 };
             }
             req.session.userId = user.id;
@@ -159,7 +168,7 @@ __decorate([
 ], UserResolver.prototype, "me", null);
 __decorate([
     type_graphql_1.Mutation(() => UserResponse),
-    __param(0, type_graphql_1.Arg('options')),
+    __param(0, type_graphql_1.Arg("options")),
     __param(1, type_graphql_1.Ctx()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [UsernamePasswordInput, Object]),
@@ -167,7 +176,7 @@ __decorate([
 ], UserResolver.prototype, "register", null);
 __decorate([
     type_graphql_1.Mutation(() => UserResponse),
-    __param(0, type_graphql_1.Arg('options')),
+    __param(0, type_graphql_1.Arg("options")),
     __param(1, type_graphql_1.Ctx()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [UsernamePasswordInput, Object]),
