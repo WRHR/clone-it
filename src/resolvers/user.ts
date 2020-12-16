@@ -13,7 +13,7 @@ import argon2 from "argon2";
 import { EntityManager } from "@mikro-orm/postgresql";
 import { COOKIE_NAME } from "../constants";
 import { UsernamePasswordInput } from "./UsernamePasswordInput";
-import { validateRegister } from "src/utils/validateRegister";
+import { validateRegister } from "../utils/validateRegister";
 
 @ObjectType()
 class FieldError {
@@ -37,7 +37,7 @@ export class UserResolver {
   @Mutation(() => Boolean)
   async forgotPassword(@Arg("email") email: string, @Ctx() { em }: MyContext) {
     const user = await em.findOne(User, { email });
-    console.log(user)
+    console.log(user);
     return true;
   }
 
@@ -56,9 +56,9 @@ export class UserResolver {
     @Arg("options") options: UsernamePasswordInput,
     @Ctx() { em, req }: MyContext
   ): Promise<UserResponse> {
-    const errors = validateRegister(options)
-    if(errors){
-      return {errors}
+    const errors = validateRegister(options);
+    if (errors) {
+      return { errors };
     }
     const hashedPassword = await argon2.hash(options.password);
     let user;
@@ -110,8 +110,8 @@ export class UserResolver {
       return {
         errors: [
           {
-            field: "username",
-            message: "that username doesn't exist",
+            field: "usernameOrEmail",
+            message: "that user doesn't exist",
           },
         ],
       };

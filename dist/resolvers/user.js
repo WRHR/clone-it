@@ -30,7 +30,7 @@ const type_graphql_1 = require("type-graphql");
 const argon2_1 = __importDefault(require("argon2"));
 const constants_1 = require("../constants");
 const UsernamePasswordInput_1 = require("./UsernamePasswordInput");
-const validateRegister_1 = require("src/utils/validateRegister");
+const validateRegister_1 = require("../utils/validateRegister");
 let FieldError = class FieldError {
 };
 __decorate([
@@ -121,8 +121,8 @@ let UserResolver = class UserResolver {
                 return {
                     errors: [
                         {
-                            field: "username",
-                            message: "that username doesn't exist",
+                            field: "usernameOrEmail",
+                            message: "that user doesn't exist",
                         },
                     ],
                 };
