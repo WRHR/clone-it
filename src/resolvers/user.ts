@@ -149,7 +149,7 @@ export class UserResolver {
         .returning("*")
         .execute();
         console.log('result: ', result)
-        user = 5 as any
+        user = result.raw[0]
     } catch (err) {
       if (err.code === "23505" || err.detail.includes("already exists")) {
         return {
