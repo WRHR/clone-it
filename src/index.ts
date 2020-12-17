@@ -1,7 +1,5 @@
 import "reflect-metadata";
-import { MikroORM } from "@mikro-orm/core";
 import { COOKIE_NAME, __prod__ } from "./constants";
-import mikroConfig from "./mikro-orm.config";
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
@@ -14,6 +12,8 @@ import session from "express-session";
 import connectRedis from "connect-redis";
 import { MyContext } from "./types";
 import cors from "cors";
+import { User } from "./entities/User";
+import { Post } from "./entities/Posts";
 
 const main = async () => {
   const conn = await createConnection({
@@ -22,10 +22,8 @@ const main = async () => {
     username: "w",
     logging: true,
     synchronize: true,
-    entities: []
+    entities: [User, Post],
   });
-  const orm = await MikroORM.init(mikroConfig);
-  await orm.getMigrator().up();
 
   const app = express();
 
