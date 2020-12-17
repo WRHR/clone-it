@@ -136,6 +136,7 @@ export class UserResolver {
     const hashedPassword = await argon2.hash(options.password);
     let user;
     try {
+      // User.create({}).save()
       const result = await getConnection()
         .createQueryBuilder()
         .insert()
@@ -147,6 +148,8 @@ export class UserResolver {
         })
         .returning("*")
         .execute();
+        console.log('result: ', result)
+        user = 5 as any
     } catch (err) {
       if (err.code === "23505" || err.detail.includes("already exists")) {
         return {
