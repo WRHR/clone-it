@@ -8,14 +8,22 @@ import { buildSchema } from "type-graphql";
 import { HelloResolver } from "./resolvers/hello";
 import { PostResolver } from "./resolvers/post";
 import { UserResolver } from "./resolvers/user";
-
-import Redis from 'ioredis'
+import { createConnection } from "typeorm";
+import Redis from "ioredis";
 import session from "express-session";
 import connectRedis from "connect-redis";
 import { MyContext } from "./types";
 import cors from "cors";
 
 const main = async () => {
+  const conn = await createConnection({
+    type: "postgres",
+    database: "cloneitdb",
+    username: "w",
+    logging: true,
+    synchronize: true,
+    entities: []
+  });
   const orm = await MikroORM.init(mikroConfig);
   await orm.getMigrator().up();
 

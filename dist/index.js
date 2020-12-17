@@ -22,11 +22,20 @@ const type_graphql_1 = require("type-graphql");
 const hello_1 = require("./resolvers/hello");
 const post_1 = require("./resolvers/post");
 const user_1 = require("./resolvers/user");
+const typeorm_1 = require("typeorm");
 const ioredis_1 = __importDefault(require("ioredis"));
 const express_session_1 = __importDefault(require("express-session"));
 const connect_redis_1 = __importDefault(require("connect-redis"));
 const cors_1 = __importDefault(require("cors"));
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
+    const conn = yield typeorm_1.createConnection({
+        type: "postgres",
+        database: "cloneitdb",
+        username: "w",
+        logging: true,
+        synchronize: true,
+        entities: []
+    });
     const orm = yield core_1.MikroORM.init(mikro_orm_config_1.default);
     yield orm.getMigrator().up();
     const app = express_1.default();
