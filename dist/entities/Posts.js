@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Post = void 0;
 const typeorm_1 = require("typeorm");
 const type_graphql_1 = require("type-graphql");
-let Post = class Post {
+let Post = class Post extends typeorm_1.BaseEntity {
 };
 __decorate([
     type_graphql_1.Field(),
