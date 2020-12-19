@@ -7,3 +7,5 @@ export const isAuth: MiddlewareFn<MyContext> = ({context}, next) => {
   }
   return next()
 };
+
+export default isAuth
