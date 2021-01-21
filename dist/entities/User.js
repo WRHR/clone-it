@@ -35,7 +35,7 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
 __decorate([
-    typeorm_1.OneToMany(() => Posts_1.Post, post => post.creator),
+    typeorm_1.OneToMany(() => Posts_1.Post, (post) => post.creator),
     __metadata("design:type", Posts_1.Post)
 ], User.prototype, "posts", void 0);
 __decorate([

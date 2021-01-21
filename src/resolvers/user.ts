@@ -203,7 +203,7 @@ export class UserResolver {
     }
 
     req.session.userId = user.id;
-
+    console.log("cookie", req.session.cookie)
     return { user };
   }
 
